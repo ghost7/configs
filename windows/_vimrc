@@ -1,0 +1,112 @@
+set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+set nobackup
+set noswapfile
+set noundofile
+
+set number
+set relativenumber
+set cursorline
+
+syntax on
+
+set background=dark   " adapt colors for background
+
+" Remove the toolbar
+if has("gui_running")
+	set guioptions-=T
+endif
+
+"Searching
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+
+set foldenable
+"Set space to trigger a fold
+nnoremap <space> za
+
+"Formatting
+set tabstop=4
+set shiftwidth=4
+set cindent
+set autoindent
+set smarttab
+set expandtab
+
+set fileformats=dos
+set guifont=Consolas:h12
+set encoding=utf-8
+set fileencoding=utf-8
+
+" move to beginning/end of line
+nnoremap B ^
+nnoremap E $
+
+" Scrolling with ALT-J/ALT-K
+nnoremap <a-j> 4<c-d>
+nnoremap <a-k> 4<c-u>
+vnoremap <a-j> 4<c-d>
+vnoremap <a-k> 4<c-u>
+
+" Plugins
+filetype off                  " required
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'elzr/vim-json'
+Plug 'drmikehenry/vim-fontsize'
+Plug 'scrooloose/nerdtree'
+Plug 'flazz/vim-colorschemes'
+Plug 'rust-lang/rust.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'Quramy/vim-js-pretty-template'
+Plug 'Quramy/tsuquyomi'
+"Plug 'Valloric/YouCompleteMe' , { 'do': './install.py --all' }
+Plug 'vim-syntastic/syntastic'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'bling/vim-airline'
+Plug 'ElmCast/elm-vim'
+
+call plug#end()
+
+" TypeScript compiler options
+let g:typescript_compiler_binary = 'tsc'
+let g:typescript_compiler_options = ''
+" Make QuickFix window automativcally show up
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+
+autocmd FileType typescript JsPreTmpl html
+autocmd FileType typescript syn clear foldBraces
+
+" Syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_balloons = 1
+
+"Enable vim-airline
+let g:airline#extensions#tabline#enabled = 1
+
+colorscheme codeschool
+
+" VisualStudio key bindings
+nnoremap gd :vsc Edit.GoToDefinition<CR>
+nnoremap gb :vsc View.NavigateBackward<CR>
+nnoremap gf :vsc View.NavigateForward<CR>
+nnoremap gr :vsc Edit.FindAllReferences<CR>
+
+" Resharper key bindings
+nnoremap gi :vsc ReSharper.ReSharper_GotoImplementation<CR>
+nnoremap gu :vsc ReSharper.ReSharper_FindUsages<CR>
+nnoremap gxt :vsc ReSharper.ReSharper_WindowManagerCloseRecentTool<CR>
