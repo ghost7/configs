@@ -8,6 +8,7 @@ if (Test-Path($ChocolateyProfile)) {
 }
 
 choco install git -y
+choco install 7zip -y
 choco install vim -y
 refreshenv
 
